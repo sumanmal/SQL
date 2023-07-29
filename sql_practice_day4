@@ -134,3 +134,26 @@ order by c.cust_country;
 
 select * from customer_order_data where cust_country in 
 (select distinct sup_country from supplier_data);
+
+
+
+
+create table tree
+(
+    node int,
+    parent int
+);
+
+insert into tree values (5,8),(9,8),(4,5),(2,9),(1,5),(3,9),(8,null);
+select * from test.tree;
+select DISTINCT parent from tree where parent is not null;
+select node,
+case when parent is null then 'root'
+     when node  not in 
+     (select distinct parent 
+     from tree
+     where parent is not null
+     ) then 'terminal'
+     else 'intermidate'
+end
+from tree;
