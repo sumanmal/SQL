@@ -157,3 +157,131 @@ case when parent is null then 'root'
      else 'intermidate'
 end
 from tree;
+
+
+-- Active: 1690634869959@@127.0.0.1@3306
+create DATABASE test;
+use test;
+show DATABASEs;
+show TABLEs;
+
+# Example for Case When with Group By - Amazon SQL Questions
+create table transactions
+(
+    trx_date date,
+    merchant_id varchar(10),
+    amount int,
+    payment_mode varchar(10)
+);
+
+insert into transactions values('2022-04-02','m1',150,'CASH');
+insert into transactions values('2022-04-02','m1',500,'ONLINE');
+insert into transactions values('2022-04-03','m2',450,'ONLINE');
+insert into transactions values('2022-04-03','m1',100,'CASH');
+insert into transactions values('2022-04-03','m3',600,'CASH');
+insert into transactions values('2022-04-05','m5',200,'ONLINE');
+insert into transactions values('2022-04-05','m2',100,'ONLINE');
+
+select * from transactions;
+
+select merchant_id,
+sum(
+    CASE 
+        WHEN payment_mode = 'ONLINE' THEN amount else 0 end) as online_amount,
+sum(
+    CASE 
+        WHEN payment_mode = 'CASH' THEN  amount else 0 end) as cash_amount
+from transactions
+group by merchant_id;
+
+# Examples for join
+create table orders
+(
+    order_id int,
+    cust_id int,
+    order_dat date, 
+    shipper_id int
+);
+
+create table customers
+(
+    cust_id int,
+    cust_name varchar(50),
+    country varchar(50)
+);
+
+create table shippers
+(
+    ship_id int,
+    shipper_name varchar(50)
+);
+
+insert into orders values(10308, 2, '2022-09-15', 3);
+insert into orders values(10309, 30, '2022-09-16', 1);
+insert into orders values(10310, 41, '2022-09-19', 2);
+
+insert into customers values(1, 'Neel', 'India');
+insert into customers values(2, 'Nitin', 'USA');
+insert into customers values(3, 'Mukesh', 'UK');
+
+insert into shippers values(3,'abc');
+insert into shippers values(1,'xyz');
+
+select * from orders;
+select * from customers;
+select * from shippers;
+
+select c.*, o.*
+from customers c
+INNER JOIN orders o on c.cust_id = o.cust_id;
+
+select 
+o.*, c.*
+from orders o
+left join customers c on o.cust_id = c.cust_id;
+
+
+select 
+o.*, c.*
+from orders o
+right join customers c on o.cust_id = c.cust_id;
+
+select 
+o.*, c.*
+from orders o
+join customers c on o.cust_id = c.cust_id;
+
+select * from orders;
+select * from customers;
+select * from shippers;
+
+select c.*,o.*,s.*
+from customers c
+inner join orders o on c.cust_id = o.cust_id
+inner join shippers s where o.shipper_id = s.ship_id;
+
+use test;
+
+create TABLE employees_full_data
+(
+    id int,
+    name VARCHAR(50),
+    mg_id int 
+);
+
+insert into employees_full_data values(1, 'Shashank', 3);
+insert into employees_full_data values(2, 'Amit', 3);
+insert into employees_full_data values(3, 'Rajesh', 4);
+insert into employees_full_data values(4, 'Ankit', 6);
+insert into employees_full_data values(6, 'Nikhil', null);
+
+select * from employees_full_data;
+
+# Write a query to print the distinct names of managers??
+
+SELECT distinct e1.id, e1.name
+from employees_full_data e1
+inner join employees_full_data e2 on e1.id = e2.mg_id
+order by e1.name;
+
+
