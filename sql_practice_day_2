@@ -1,169 +1,43 @@
-create DATABASE class2_db;
-use class2_db;
-create table if not exists employee 
-(
-    id int,
-    name varchar(50),
-    address varchar(50),
-    city VARCHAR(20)
-);
 
+/* Create a procedure 
+Maintain indentation and syntax
+*/
 
-SELECT * from class2_db.employee;
-DESCRIBE employee;
+DELIMITER &&
+CREATE PROCEDURE SELECT_REC()
+BEGIN 
+	SELECT * 
+	FROM BANK_DETAILS ;
+END &&
 
-alter TABLE employee add DOB date;
-alter table employee modify COLUMN id int not null;
-alter table employee modify COLUMN name VARCHAR(20) not null;
+CALL SELECT_REC();
 
 
+DELIMITER &&
+CREATE PROCEDURE MIN_BALANCE()
+BEGIN 
+	SELECT BD.* 
+	FROM BANK_DETAILS BD
+	ORDER BY BD.BALANCE ASC
+	LIMIT 1;
+END &&
 
-alter table employee modify COLUMN id int PRIMARY KEY;
+CALL MIN_BALANCE();
 
-alter Table employee rename COLUMN address to full_add;
+DELIMITER &&
+CREATE procedure MAX_BALANCE()
+BEGIN 
+SELECT BD.* 
+FROM BANK_DETAILS BD
+ORDER BY BD.BALANCE DESC
+LIMIT 1;
+END &&
 
-ALTER table employee DROP COLUMN city;
+CALL MAX_BALANCE();
 
-alter table employee add COLUMN city VARCHAR(20);
-ALTER Table employee MODIFY COLUMN name VARCHAR(50) NOT NULL;
 
-ALTER Table employee MODIFY COLUMN city VARCHAR(30) DEFAULT 'NOT SPECFIED';
+SELECT AVG(BD.BALANCE) AS AVG_BALANCE
+FROM BANK_DETAILS BD
+WHERE BD.JOB = "admin.";
 
-
-
-show TABLES;
-
-DROP Table employee;
-create table if not exists employee(
-    id int,
-    name VARCHAR(50),
-    age int,
-    hiring_date date,
-    salary int,
-    city varchar(50)
-);
-
-insert into employee values(1,'Shashank', 24, '2021-08-10', 10000, 'Lucknow');
-
-insert into employee values(2,'Rahul', 25, '2021-08-10', 20000, 'Khajuraho');
-
-insert into employee values(3,'Sunny', 22, '2021-08-11', 11000, 'Banaglore');
-
-insert into employee values(5,'Amit', 25, '2021-08-11', 12000, 'Noida');
-
-insert into employee values(1,'Puneet', 26, '2021-08-12', 50000, 'Gurgaon');
-
-SELECT * from employee;
-
-ALTER Table employee add constraint id_unique UNIQUE(id);
-
-DESCRIBE employee;
-
-insert into employee values(1,'Puneet', 26, '2021-08-12', 50000, 'Gurgaon');
-
-alter table employee drop constraint id_unique;
-
-create table if NOT exists person 
-(
-  id int,
-  name VARCHAR(40),
-  age int,
-  -- PRIMARY key 
-  constraint pk PRIMARY KEY(id)
-);
-
-DESCRIBE persons;
-
-insert into person values(1,'Shashank',29);
-insert into person values(1,'Rahul',28);
-
-alter table person rename persons;
-
-alter table persons add constraint age_unq UNIQUE(age); 
-insert into persons values(null,'Rahul',28);
-
-SELECT * from persons;
-
-insert into persons values(2,'Rahul',28);
-
-
-insert into persons values(3,'Amit',28);
-
-insert into persons values(3,'Amit',null);
-
-insert into persons values(4,'Charan',null);
-
-insert into persons values(5,'Deepak',null);
-
-
-CREATE table if NOT exists customer
-(
-    cust_id int,
-    name varchar (50),
-    age int,
-    constraint pk PRIMARY KEY(cust_id)
-);
-
-CREATE table if not exists orders 
-(
-    order_id int,
-    order_num int,
-    customer_id int,
-    constraint pk PRIMARY KEY(order_id),
-    constraint fk FOREIGN KEY(customer_id) REFERENCES customer(cust_id)
-);
-
-DESCRIBE orders;
-
-show tables;
- drop Table orders;
-
-
-
-TRUNCATE TABLE persons;
-
-SELECT * from class2_db.persons;
-
-drop table orders;
-
-
--------------------
-
-show TABLEs;
-
-
-select e.*
-from class2_db.employee e 
-where e.salary > 500
-limit 10
-;
-
-select e.id, e.name, e.age, e.hiring_date,
-e.salary,
-(e.salary + 0.2*e.salary) as new_salary,
-e.city 
-from employee e
-where e.id = 1;
-
-
-
-update employee e 
-set e.city = 'BLR'
-where e.id = 1;
-update employee SET salary = 80000 where hiring_date = '2021-08-10';
-
-DELETE from employee e 
-where e.id = 1;
-
-SELECT * from class2_db.employee;
-
-
-
-
-
-
-
-
-
-
-
+# How to pass parameter in a procedure ?
