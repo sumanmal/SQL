@@ -29,6 +29,176 @@ ignore 1 rows;
 
 select * from dress;
 
+select * from dress;
+
+# Auto Increment 
+create table if not exists test(
+`id` int auto_increment,
+`name` varchar(30),
+`mailid` varchar(30),
+`address` varchar(30),
+primary key (id)
+);
+
+# ERROR = Error Code: 1075. Incorrect table definition; there can be only one auto column and it must be defined as a key	0.000 sec
+/*
+The PRIMARY KEY constraint uniquely identifies each record in a table. 
+Primary keys must contain UNIQUE values, and cannot contain NULL values.
+Auto Increment coloumn should be primary or foreign key.
+*/
+
+insert into test values (1,"Suman",'sumanmalxrt@gmail.com','Serampore'), 
+(2,'krish','krish@gmail.com','Bangalore'), 
+(3,'Rupam','rupam@gmail.com','Delhi'),
+(4,'Subham','subham@gamil.com','Roorkee');
+
+
+select * from test;
+
+create table if not exists test1(
+`id` int not null auto_increment,
+`name` varchar(30),
+`mailid` varchar(30),
+`address` varchar(30),
+primary key (id)
+);
+
+insert into test1 (`name`,`mailid`,`address`) values ("Suman",'sumanmalxrt@gmail.com','Serampore'), 
+('krish','krish@gmail.com','Bangalore'), 
+('Rupam','rupam@gmail.com','Delhi'),
+('Subham','subham@gamil.com','Roorkee');
+
+truncate test1;
+
+select * from test1;
+
+# CHECK CONSTRAINT
+
+create table if not exists test2 
+(
+`id` int ,
+`name` varchar(30),
+`mailid` varchar(30),
+`address` varchar(30),
+`salary` int check(`salary` > 10000) 
+);
+
+insert into test2 values (1,"Suman",'sumanmalxrt@gmail.com','Serampore',12000), 
+(2,'krish','krish@gmail.com','Bangalore',10001), 
+(3,'Rupam','rupam@gmail.com','Delhi',18000),
+(4,'Subham','subham@gamil.com','Roorkee',44000);
+
+select * from test2;
+
+create table if not exists test3
+(
+`id` int  ,
+`name` varchar(30),
+`mailid` varchar(30),
+`address` varchar(30) check (`address` = 'Bangalore'),
+`salary` int check(`salary` > 10000) 
+);
+
+insert into test3 values (1,"Suman",'sumanmalxrt@gmail.com','Bangalore',12000), 
+(2,'krish','krish@gmail.com','Bangalore',10001), 
+(3,'Rupam','rupam@gmail.com','Bangalore',18000),
+(4,'Subham','subham@gamil.com','Bangalore',44000);
+
+select * from test3;
+
+ALTER TABLE TEST3 add constraint id check (`id`> 0);
+
+
+create table if not exists test4
+(
+`id` int  not null,
+`name` varchar(30),
+`mailid` varchar(30),
+`address` varchar(30) check (`address` = 'Bangalore'),
+`salary` int check(`salary` > 10000) 
+);
+
+insert into test4 (`name`,`mailid`,`address`) values ("Suman",'sumanmalxrt@gmail.com','Serampore'), 
+('krish','krish@gmail.com','Bangalore'), 
+('Rupam','rupam@gmail.com','Delhi'),
+('Subham','subham@gamil.com','Roorkee');
+create table if not exists test5
+(
+`id` int  not null default  0,
+`name` varchar(30),
+`mailid` varchar(30),
+`address` varchar(30) ,
+`salary` int check(`salary` > 10000) 
+);
+
+drop table test5;
+
+insert into test5 (`name`,`mailid`,`address`,`salary`) values ("Suman",'sumanmalxrt@gmail.com','Serampore',11000), 
+('krish','krish@gmail.com','Bangalore',12000), 
+('Rupam','rupam@gmail.com','Delhi',13000),
+('Subham','subham@gamil.com','Roorkee',14000);
+
+select * from test5;
+
+
+create table if not exists test6
+(
+`id` int  not null default  0,
+`name` varchar(30),
+`mailid` varchar(30) UNIQUE ,
+`address` varchar(30) check (`address` = 'Bangalore'),
+`salary` int check(`salary` > 10000) 
+
+);
+
+insert into test6 (`name`,`mailid`,`address`,`salary`) values ("Suman",'sumanmalxrt@gmail.com','Bangalore',11000), 
+('krish','krish@gmail.com','Bangalore',12000), 
+('Rupam','rupam@gmail.com','Bangalore',13000),
+('Subham','subham@gamil.com','Bangalore',14000);
+
+select * from test6;
+
+create table if not exists test7 (
+`id` int not null auto_increment,
+`name` varchar(30) not null default 'unknown',
+`mailid` varchar(30) UNIQUE not null,
+`address` varchar(30) check (`address` = 'Bangalore') NOT NULL,
+`salary` int check(`salary` > 10000) NOT NULL,
+primary key (id)
+);
+select * from test7;
+insert into test7 (`id`,`name`,`mailid`,`address`,`salary`) values (101,"Suman",'sumanmalxrt@gmail.com','Bangalore',11000);
+insert into test7 (`id`,`name`,`mailid`,`address`,`salary`) values (102,"Suman",'sumanmalxrt1@gmail.com','Bangalore',11000);
+insert into test7 (`id`,`name`,`mailid`,`address`,`salary`) values (500,"Suman",'sumanmalxrt2@gmail.com','Bangalore',11000);
+insert into test7 (`name`,`mailid`,`address`,`salary`) values ("Suman",'sumanmalxrt3@gmail.com','Bangalore',11000);
+insert into test7 (`id`,`name`,`mailid`,`address`,`salary`) values (103,"Suman",'sumanmalxrt4@gmail.com','Bangalore',11000);
+insert into test7 (`name`,`mailid`,`address`,`salary`) values ("Suman",'sumanmalxrt5@gmail.com','Bangalore',11000);
+
+
+insert into test7 
+(`name`,`mailid`,`address`,`salary`) 
+values 
+("Suman",'sumanmalxrt@gmail.com','Bangalore',11000), 
+('krish','krish@gmail.com','Bangalore',12000), 
+('Rupam','rupam@gmail.com','Bangalore',13000),
+('Subham','subham@gamil.com','Bangalore',14000);
+
+
+CREATE TABLE if not exists `machines` (
+    `id` int(11) NOT NULL,
+    `hostname` varchar(255),
+    `ip_address` varchar(15),
+    `network` varchar(255) NOT NULL,
+    CONSTRAINT CHK_network CHECK (network = 'INTERNAL' OR 'EXTERNAL' OR 'OTHER'),
+    PRIMARY KEY (`id`)
+    );
+INSERT INTO `machines`
+
+VALUES
+    (1, 'host1', '123.123.123.1', 'EXTERNAL'),
+    (2, 'host2', '192.168.0.1', 'EXTERNAL' ),
+    (3, 'host3', '192.168.0.2', '       ' );
+
 
 
 
