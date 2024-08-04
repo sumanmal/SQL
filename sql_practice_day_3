@@ -1,134 +1,34 @@
-show DATABASEs;
-show tables;
-
-use class2_db;
-insert into employee values(1,'Shashank', 24, '2021-08-10', 10000, 'Lucknow');
-insert into employee values(2,'Rahul', 25, '2021-08-10', 20000, 'Khajuraho');
-insert into employee values(3,'Sunny', 22, '2021-08-11', 11000, 'Banaglore');
-insert into employee values(5,'Amit', 25, '2021-08-11', 12000, 'Noida');
-insert into employee values(1,'Puneet', 26, '2021-08-12', 50000, 'Gurgaon');
-
-SELECT * from employee;
-
-update employee set age=20,salary=25000 where hiring_date = '2021-08-10';
-
-
-create table auto_inc_exmp
-(
-  id int auto_increment,
-  name varchar(20),
-  primary key (id)
+create database dress_data;
+use dress_data;
+create table if not exists dress(
+`Dress_ID` varchar(30),
+`Style` varchar(30),
+`Price` varchar(30),
+`Rating` varchar(30),
+`Size` varchar(30),
+`Season` varchar(30),
+`NeckLine` varchar(30),
+`SleeveLength` varchar(30),
+`waiseline` varchar(30),
+`Material` varchar(30),
+`FabricType` varchar(30),
+`Decoration` varchar(30),
+`PatternType` varchar(30),
+`Recommendation` varchar(30)
 );
+# Load data in the table 
 
-SELECT * from auto_inc_exmp;;
+load data infile 'C:/AttributeDataSet.csv'
+into table dress
+fields terminated by ','
+enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows;
 
-insert into auto_inc_exmp(name) values('Shashank');
-insert into auto_inc_exmp(name) values('Rahul');
+# ERROR - The MySQL server is running with the --secure-file-priv option so it cannot execute this statement	0.000 sec
 
-SELECT * from employee
-order by id,name;
-
-SELECT e.*
-from employee e 
-order by salary desc, name ;
-
-select count(*)
-from employee e ;
+select * from dress;
 
 
 
-# list all employees who are getting salary more than 20000
-select * from employee where salary>20000;
 
-# list all employees who are getting salary more than or equal to 20000
-select * from employee where salary>=20000;
-
-# list all employees who are getting less than 20000
-select * from employee where salary<20000;
-
-# list all employees who are getting salary less than or equal to 20000
-select * from employee where salary<=20000;
-
-
-# filter the record where age of employees is equal to 20
-select * from employee where age=20;
-
-# filter the record where age of employees is not equal to 20
-# we can use != or we can use <>
-select * from employee where age != 20;
-select * from employee where age <> 20;
-
-# find those employees who joined the company on 2021-08-11 and their salary is less than 11500
-select * from employee where hiring_date = '2021-08-11' and salary<11500;
-
-# find those employees who joined the company after 2021-08-11 or  their salary is less than 20000
-select * from employee where hiring_date > '2021-08-11' or salary<20000;
-
-# how to use Between operation in where clause
-# get all employees data who joined the company between hiring_date 2021-08-05 to 2021-08-11
-select * from employee where hiring_date between '2021-08-05' and '2021-08-11';
-
-# get all employees data who are getting salary in the range of 10000 to 28000
-select * from employee where salary between 20000 and 10000;
-
-
-SELECT *
-from employee e 
-where e.name like '%______%';
-
-# How to use IS NULL or IS NOT NULL in the where clause
-insert into employee values(10,'Kapil', null, '2021-08-10', 10000, 'Assam');
-insert into employee values(11,'Nikhil', 30, '2021-08-10', null, 'Assam');
-SELECT * from employee order by id;
-
-select e.*
-from employee e 
-where e.age is null;
-
-select e.*
-from employee e 
-where e.salary is null or e.age is null;
-
-
-
-create table orders_data
-(
- cust_id int,
- order_id int,
- country varchar(50),
- state varchar(50)
-);
-insert into orders_data values(1,100,'USA','Seattle');
-insert into orders_data values(2,101,'INDIA','UP');
-insert into orders_data values(2,103,'INDIA','Bihar');
-insert into orders_data values(4,108,'USA','WDC');
-insert into orders_data values(5,109,'UK','London');
-insert into orders_data values(4,110,'USA','WDC');
-insert into orders_data values(3,120,'INDIA','AP');
-insert into orders_data values(2,121,'INDIA','Goa');
-insert into orders_data values(1,131,'USA','Seattle');
-insert into orders_data values(6,142,'USA','Seattle');
-insert into orders_data values(7,150,'USA','Seattle');
-
-SELECT * from orders_data;
-
-select country, count(distinct order_id) as total_sales_for_each_country
-from orders_data
-group by country 
-order by total_sales_for_each_country desc;
-select age, sum(salary)
-from employee
-where age is not NULL
-and salary is not null
-GROUP BY age;
-
-select age,
-sum(salary) as total_salary_each_age_group,
-max(salary) as max_salary_each_age_group,
-min(salary) as min_salary_each_age_group,
-avg(salary) as avg_salary_each_age_group,
-count(salary) as number_of_employees_each_age_group
-from employee
-where age is not null and salary is NOT NULL
-GROUP BY age 
-ORDER BY age desc;
