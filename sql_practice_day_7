@@ -39,3 +39,7 @@ insert into student values(100 ,'fsda' , 'saurabh','cs',80,'saurabh@gmail.com'),
 (118 ,'fsbc' , 'pranay','ECE',45,'pranay@gmail.com'),
 (119 ,'fsbc' , 'sandeep','ECE',65,'sandeep@gmail.com');
 
+
+update student s 
+set s.student_batch = 'fsda'
+where s.student_id = 101;
