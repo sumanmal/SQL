@@ -203,3 +203,28 @@ Task
     5 . create a procedure to find out  5th highest profit in your sales table you dont have to use rank and windowing function 
 */
 
+/* Answer */
+-- 1.
+
+
+create table loop_table_test_1( 
+var1 int,
+var2 int
+);
+
+delimiter &&
+create procedure INSERT_DATA_4()
+begin 
+	set @var = 1;
+    generate_data : loop 
+    if @var < 101 then
+		insert into loop_table_test_1 (var1, var2) values (@var, power(@var,2));
+        set @var = @var + 1;
+	else
+		leave generate_data;
+	end if;
+	end loop generate_data;
+end && 
+
+call INSERT_DATA_4();
+select * from loop_table_test_1; 
