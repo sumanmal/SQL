@@ -228,3 +228,18 @@ end &&
 
 call INSERT_DATA_4();
 select * from loop_table_test_1; 
+
+-- 2.
+
+delimiter &&
+create function date_diff_days(var1 date , var2 date )
+returns int 
+deterministic
+begin 
+	declare variable int;
+    set variable = datediff(var1,var2);
+    return variable;
+end &&
+
+select date_diff_days("2017-11-25 09:34:21","2017-06-15 ");
+
