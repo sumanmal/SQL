@@ -243,3 +243,15 @@ end &&
 
 select date_diff_days("2017-11-25 09:34:21","2017-06-15 ");
 
+-- 3
+delimiter &&
+create function log_base_10(var int)
+returns int
+deterministic
+begin 
+	declare variable int;
+    set variable = log10(var);
+    return variable;
+end &&
+
+select log_base_10(1000);
