@@ -255,3 +255,30 @@ begin
 end &&
 
 select log_base_10(1000);
+
+
+-- 4
+delimiter &&
+create function count_records_6(var varchar(30))
+returns int
+deterministic 
+begin 
+	declare var_ int;
+    select count(*) into var_
+    from sales.loop_table;
+    return var_;
+end &&
+
+select count_records_6("sales.loop_table");
+
+-- 5
+delimiter &&
+create procedure fifth_largest_sales ()
+begin
+	select s.sales
+    from sales1 s
+    order by s.sales desc 
+    limit 1 offset 4;
+end && 
+
+call fifth_largest_sales ();
